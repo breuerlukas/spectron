@@ -1,0 +1,41 @@
+plugins {
+  id "java"
+}
+
+group "de.lukasbreuer.minecraftbot"
+version "1.0.0-SNAPSHOT"
+
+sourceCompatibility = 20
+targetCompatibility = 20
+
+repositories {
+  mavenCentral()
+  maven {
+    url "https://jitpack.io"
+  }
+}
+
+dependencies {
+  testCompileOnly "org.junit.jupiter:junit-jupiter-api:5.9.2"
+  testCompileOnly "org.junit.jupiter:junit-jupiter-engine:5.9.2"
+
+  compileOnly "com.google.inject:guice:5.1.0"
+
+  compileOnly "com.google.guava:guava:31.1-jre"
+
+  compileOnly "org.projectlombok:lombok:1.18.26"
+  annotationProcessor "org.projectlombok:lombok:1.18.26"
+  testCompileOnly "org.projectlombok:lombok:1.18.26"
+  testAnnotationProcessor "org.projectlombok:lombok:1.18.26"
+
+  compileOnly "org.mongodb:mongodb-driver-reactivestreams:4.9.1"
+
+  compileOnly "org.deeplearning4j:deeplearning4j-core:1.0.0-M2.1"
+  compileOnly "org.nd4j:nd4j-native-platform:1.0.0-M2.1"
+
+  compileOnly group: "org.json", name: "json", version: "20230227"
+}
+
+test {
+  useJUnitPlatform()
+}
