@@ -25,7 +25,7 @@ public final class PacketBuffer {
   }
 
   public void writeString(String value) {
-    var bytes = value.getBytes();
+    var bytes = value.getBytes(StandardCharsets.UTF_8);
     writeVarInt(bytes.length);
     buffer.writeBytes(bytes);
   }
