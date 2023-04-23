@@ -1,35 +1,27 @@
 package de.lukasbreuer.bot.connection.packet.cryptography;
 
-import de.lukasbreuer.bot.connection.ConnectionClient;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import lombok.RequiredArgsConstructor;
 
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.SecretKey;
 
+@RequiredArgsConstructor(staticName = "create")
 public final class PacketEncryption extends MessageToByteEncoder<ByteBuf> {
-  public static PacketEncryption create(ConnectionClient client) {
-    return new PacketEncryption(client);
+  public static PacketEncryption create(SecretKey key) {
+    var cipher = Cipher.create(key, CipherMode.ENCRYPTION);
+    cipher.initialize();
+    return create(cipher);
   }
 
-  private final ConnectionClient client;
-  private final JavaCipher cipher;
-
-  private PacketEncryption(ConnectionClient client) {
-    this.client = client;
-    cipher = new JavaCipher();
-    try {
-      cipher.init(true, new SecretKeySpec(client.key(), "AES"));
-    } catch (Exception exception) {
-      exception.printStackTrace();
-    }
-  }
+  private final Cipher cipher;
 
   @Override
   protected void encode(
-    ChannelHandlerContext context, ByteBuf inByteBuf, ByteBuf outByteBuf
+    ChannelHandlerContext context, ByteBuf incomingBuffer,
+    ByteBuf outgoingBuffer
   ) throws Exception {
-    System.out.println("ENCODE3");
-    cipher.cipher(inByteBuf, outByteBuf);
+    cipher.encrypt(incomingBuffer, outgoingBuffer);
   }
 }
