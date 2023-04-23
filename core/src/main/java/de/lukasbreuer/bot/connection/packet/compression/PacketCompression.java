@@ -11,15 +11,15 @@ import lombok.RequiredArgsConstructor;
 public class PacketCompression extends MessageToByteEncoder<ByteBuf> {
   @Override
   protected void encode(
-    ChannelHandlerContext context, ByteBuf inByteBuf, ByteBuf outByteBuf
+    ChannelHandlerContext context, ByteBuf incomingBuffer,
+    ByteBuf outgoingBuffer
   ) {
-    System.out.println("ENCODE2");
     var tempBuffer = PacketBuffer.create(Unpooled.buffer(0));
     tempBuffer.writeVarInt(0);
-    tempBuffer.raw().writeBytes(inByteBuf);
+    tempBuffer.raw().writeBytes(incomingBuffer);
     var buffer = PacketBuffer.create(Unpooled.buffer(0));
     buffer.writeVarInt(tempBuffer.raw().readableBytes());
     buffer.raw().writeBytes(tempBuffer.raw());
-    outByteBuf.writeBytes(buffer.raw());
+    outgoingBuffer.writeBytes(buffer.raw());
   }
 }
