@@ -16,7 +16,6 @@ public class PacketEncoder extends MessageToByteEncoder<PacketOutgoing> {
   protected void encode(
     ChannelHandlerContext context, PacketOutgoing packet, ByteBuf byteBuf
   ) throws Exception {
-    System.out.println("ENCODE1");
     var buffer = PacketBuffer.create(Unpooled.buffer(0));
     if (!client.compressionEnabled()) {
       var tempBuffer = PacketBuffer.create(Unpooled.buffer(0));

@@ -15,7 +15,6 @@ public final class PacketIdentification extends ByteToMessageDecoder {
   protected void decode(ChannelHandlerContext context, ByteBuf byteBuf, List<Object> list) throws Exception {
     var buffer = PacketBuffer.create(byteBuf);
     int id = buffer.readVarInt();
-    System.out.println("Id: " + id);
     var packetClass = packetRegistry.findIncomingPacketById(id);
     if (packetClass.isEmpty()) {
       return;
