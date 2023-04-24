@@ -42,7 +42,7 @@ public final class ChannelPacketInbox extends SimpleChannelInboundHandler<Packet
       eventExecutor.execute(SetCompressionEvent.create(packet.threshold()));
     } else if (incomingPacket instanceof PacketLoginSuccess packet) {
       eventExecutor.execute(LoginSuccessEvent.create(packet.uuid(),
-        packet.username()));
+        packet.username(), packet.properties()));
     }
   }
 
