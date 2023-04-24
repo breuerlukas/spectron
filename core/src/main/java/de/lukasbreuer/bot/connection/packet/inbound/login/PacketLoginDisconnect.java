@@ -1,16 +1,15 @@
 package de.lukasbreuer.bot.connection.packet.inbound.login;
 
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
-import de.lukasbreuer.bot.connection.packet.inbound.PacketIncoming;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
-public final class PacketDisconnect extends PacketIncoming {
+public final class PacketLoginDisconnect extends PacketIncomingLogin {
   private String reason;
 
-  public PacketDisconnect() {
+  public PacketLoginDisconnect() {
     super(0x00);
   }
 

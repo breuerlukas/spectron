@@ -1,13 +1,12 @@
 package de.lukasbreuer.bot.connection.packet.inbound.login;
 
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
-import de.lukasbreuer.bot.connection.packet.inbound.PacketIncoming;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
-public final class PacketSetCompression extends PacketIncoming {
+public final class PacketSetCompression extends PacketIncomingLogin {
   private int threshold;
 
   public PacketSetCompression() {
