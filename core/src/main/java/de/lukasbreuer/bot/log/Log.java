@@ -1,6 +1,5 @@
 package de.lukasbreuer.bot.log;
 
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
