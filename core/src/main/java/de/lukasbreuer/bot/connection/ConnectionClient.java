@@ -1,9 +1,11 @@
 package de.lukasbreuer.bot.connection;
 
-import de.lukasbreuer.bot.authentication.Authentication;
 import de.lukasbreuer.bot.connection.channel.ChannelEquipment;
 import de.lukasbreuer.bot.connection.packet.PacketRegistry;
+import de.lukasbreuer.bot.connection.packet.compression.CompressionStatus;
+import de.lukasbreuer.bot.connection.packet.cryptography.CryptographyStatus;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
+import de.lukasbreuer.bot.event.EventExecutor;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -14,27 +16,26 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 @Accessors(fluent = true)
 @RequiredArgsConstructor(staticName = "create")
 public final class ConnectionClient {
   private final PacketRegistry packetRegistry;
   private final String hostname;
   private final int port;
+  private final EventExecutor eventExecutor;
   @Getter
   private Channel channel;
   private EventLoopGroup group;
-  @Setter
-  @Getter
-  private Authentication authentication;
-  @Setter
-  @Getter
-  private byte[] key;
-  @Setter
-  @Getter
-  private boolean compressionEnabled;
-  @Setter
-  @Getter
-  private boolean login = false;
+  @Getter @Setter
+  private ProtocolState protocolState = ProtocolState.HANDSHAKE;
+  @Getter @Setter
+  private CryptographyStatus cryptographyStatus = CryptographyStatus.DISABLED;
+  @Getter @Setter
+  private CompressionStatus compressionStatus = CompressionStatus.DISABLED;
+  @Getter @Setter
+  private UUID sessionId;
 
   public void connectAsync(Runnable callback) {
     new Thread(() -> connect(callback)).start();
@@ -50,7 +51,7 @@ public final class ConnectionClient {
     channel = new Bootstrap()
       .group(group)
       .channel(NioSocketChannel.class)
-      .handler(ChannelEquipment.create(this, packetRegistry))
+      .handler(ChannelEquipment.create(this, packetRegistry, eventExecutor))
       .connect(hostname, port)
       .syncUninterruptibly().channel();
   }

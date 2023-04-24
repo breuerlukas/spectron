@@ -1,14 +1,18 @@
 package de.lukasbreuer.bot.connection.packet;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import de.lukasbreuer.bot.connection.packet.inbound.PacketIncoming;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor(staticName = "create")
+@Singleton
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE, onConstructor = @__({@Inject}))
 public final class PacketRegistry {
   private final Map<Integer, Class<? extends PacketOutgoing>> outgoingPackets = Maps.newHashMap();
   private final Map<Integer, Class<? extends PacketIncoming>> incomingPackets = Maps.newHashMap();
