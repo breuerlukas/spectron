@@ -11,7 +11,6 @@ import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Singleton
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE, onConstructor = @__({@Inject}))
@@ -31,13 +30,13 @@ public final class PacketRegistry {
     incomingPackets.add(packet.getConstructor().newInstance());
   }
 
-  public Optional<Class<? extends PacketOutgoing>> findOutgoingPacketById(
+  public Optional<Class<? extends PacketOutgoing>> findOutgoingPacket(
     int id, ProtocolState protocolState
   ) {
     return findPacket(id, protocolState, outgoingPackets);
   }
 
-  public Optional<Class<? extends PacketIncoming>> findIncomingPacketById(
+  public Optional<Class<? extends PacketIncoming>> findIncomingPacket(
     int id, ProtocolState protocolState
   ) {
     return findPacket(id, protocolState, incomingPackets);

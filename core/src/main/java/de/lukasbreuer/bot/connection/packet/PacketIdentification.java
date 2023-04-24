@@ -20,7 +20,7 @@ public final class PacketIdentification extends ByteToMessageDecoder {
     try {
       var buffer = PacketBuffer.create(byteBuf);
       int id = buffer.readVarInt();
-      var packetClass = packetRegistry.findIncomingPacketById(id,
+      var packetClass = packetRegistry.findIncomingPacket(id,
         client.protocolState());
       if (packetClass.isEmpty()) {
         return;
