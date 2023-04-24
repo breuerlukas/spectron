@@ -1,5 +1,6 @@
 package de.lukasbreuer.bot.event.login;
 
+import de.lukasbreuer.bot.connection.packet.inbound.login.PacketLoginSuccess;
 import de.lukasbreuer.bot.event.Event;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,4 +14,5 @@ import java.util.UUID;
 public final class LoginSuccessEvent extends Event {
   private final UUID uuid;
   private final String username;
+  private final PacketLoginSuccess.Property[] properties;
 }
