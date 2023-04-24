@@ -12,7 +12,10 @@ public class Event {
   public void call(HookRegistry registry) throws Exception {
     var hookMethods = findEventHookMethods(registry);
     for (var hookMethod : hookMethods.entrySet()) {
-      hookMethod.getValue().invoke(hookMethod.getKey(), this);
+      var hook = hookMethod.getKey();
+      var method = hookMethod.getValue();
+      method.setAccessible(true);
+      method.invoke(hook, this);
     }
   }
 
