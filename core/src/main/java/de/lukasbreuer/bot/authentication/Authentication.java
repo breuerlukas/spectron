@@ -12,15 +12,15 @@ import java.util.concurrent.CompletableFuture;
 public final class Authentication {
   private final Credentials credentials;
   private final UUID playerUuid;
-  private final String serverHash;
+  private String minecraftAccessToken;
   @Getter
-  private String accessToken;
+  private PlayerCertificate playerCertificate;
 
-  public CompletableFuture<Boolean> authenticate() {
+  public CompletableFuture<Boolean> authenticate(String serverHash) {
     var futureResult = new CompletableFuture<Boolean>();
     microsoftLogin().thenAccept(result ->
       minecraftLogin(result.accessToken(), result.userHash()).thenAccept(accessToken ->
-        joinMinecraftServer(accessToken).thenAccept(futureResult::complete)));
+        minecraftClientAuthentication(serverHash, accessToken).thenAccept(futureResult::complete)));
     return futureResult;
   }
 
@@ -36,11 +36,33 @@ public final class Authentication {
   private CompletableFuture<String> minecraftLogin(
     String accessToken, String userHash
   ) {
-    return MinecraftLoginRequest.create(accessToken, userHash).send();
+    var future = new CompletableFuture<String>();
+    future.thenAccept(token -> minecraftAccessToken = token);
+    MinecraftLoginRequest.create(accessToken, userHash).send()
+      .thenAccept(future::complete);
+    return future;
   }
 
-  private CompletableFuture<Boolean> joinMinecraftServer(String accessToken) {
-    this.accessToken = accessToken;
+  private CompletableFuture<Boolean> minecraftClientAuthentication(
+    String serverHash, String accessToken
+  ) {
+    var futureResult = new CompletableFuture<Boolean>();
+    certificatePlayer(accessToken).thenAccept(certificate ->
+      joinMinecraftServer(serverHash, accessToken).thenAccept(futureResult::complete));
+    return futureResult;
+  }
+
+  private CompletableFuture<PlayerCertificate> certificatePlayer(String accessToken) {
+    var future = new CompletableFuture<PlayerCertificate>();
+    future.thenAccept(certificate -> playerCertificate = certificate);
+    MinecraftCertificateRequest.create(accessToken).send()
+      .thenAccept(future::complete);
+    return future;
+  }
+
+  private CompletableFuture<Boolean> joinMinecraftServer(
+    String serverHash, String accessToken
+  ) {
     return MinecraftJoinServerRequest.create(accessToken,
       playerUuid.toString().replace("-", ""), serverHash).send();
   }

@@ -1,8 +1,6 @@
 package de.lukasbreuer.bot.authentication;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -21,32 +19,14 @@ import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor(staticName = "create")
-public final class MinecraftPlayerCertificate implements AuthenticationRequest<MinecraftPlayerCertificate.CertificateResult> {
-  @Getter
-  @Accessors(fluent = true)
-  public class CertificateResult {
-    private final PrivateKey privateKey;
-    private final PublicKey publicKey;
-    private final String publicKeySignature;
-    private final long expiration;
-
-    public CertificateResult(
-      PrivateKey privateKey, PublicKey publicKey, String publicKeySignature, long expiration
-    ) {
-      this.privateKey = privateKey;
-      this.publicKey = publicKey;
-      this.publicKeySignature = publicKeySignature;
-      this.expiration = expiration;
-    }
-  }
-
+public final class MinecraftCertificateRequest implements AuthenticationRequest<PlayerCertificate> {
   private final String accessToken;
 
   private static final String MINECRAFT_CERTIFICATE_URL =
     "https://api.minecraftservices.com/player/certificates";
 
   @Override
-  public CompletableFuture<CertificateResult> send() {
+  public CompletableFuture<PlayerCertificate> send() {
     var request = HttpRequest.newBuilder()
       .uri(URI.create(MINECRAFT_CERTIFICATE_URL))
       .header("Authorization", "Bearer " + accessToken)
@@ -57,7 +37,7 @@ public final class MinecraftPlayerCertificate implements AuthenticationRequest<M
       .thenApply(this::createCertificateResult);
   }
 
-  private CertificateResult createCertificateResult(String body) {
+  private PlayerCertificate createCertificateResult(String body) {
     var jsonBody = new JSONObject(body);
     var keyPair = jsonBody.getJSONObject("keyPair");
     var privateKeyContent = keyPair.getString("privateKey")
@@ -72,7 +52,7 @@ public final class MinecraftPlayerCertificate implements AuthenticationRequest<M
     var publicKey = createPublicKey(publicKeyContent);
     var publicKeySignature = jsonBody.getString("publicKeySignatureV2");
     var expirationTime = extractExpirationTime(jsonBody.getString("expiresAt"));
-    return new CertificateResult(privateKey, publicKey, publicKeySignature,
+    return PlayerCertificate.create(privateKey, publicKey, publicKeySignature,
       expirationTime);
   }
 
@@ -87,7 +67,7 @@ public final class MinecraftPlayerCertificate implements AuthenticationRequest<M
     return null;
   }
 
-  public PublicKey createPublicKey(String publicKeyContent) {
+  private PublicKey createPublicKey(String publicKeyContent) {
     try {
       var keyFactory = KeyFactory.getInstance("RSA");
       var keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyContent));
