@@ -1,43 +1,53 @@
 package de.lukasbreuer.bot.connection.packet;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.inbound.PacketIncoming;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.compress.utils.Lists;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Singleton
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE, onConstructor = @__({@Inject}))
 public final class PacketRegistry {
-  private final Map<Integer, Class<? extends PacketOutgoing>> outgoingPackets = Maps.newHashMap();
-  private final Map<Integer, Class<? extends PacketIncoming>> incomingPackets = Maps.newHashMap();
+  private final List<PacketOutgoing> outgoingPackets = Lists.newArrayList();
+  private final List<PacketIncoming> incomingPackets = Lists.newArrayList();
 
   public void registerOutgoingPacket(
     Class<? extends PacketOutgoing> packet
   ) throws Exception {
-    outgoingPackets.put(findPacketIdByClass(packet), packet);
+    outgoingPackets.add(packet.getConstructor().newInstance());
   }
 
   public void registerIncomingPacket(
     Class<? extends PacketIncoming> packet
   ) throws Exception {
-    incomingPackets.put(findPacketIdByClass(packet), packet);
+    incomingPackets.add(packet.getConstructor().newInstance());
   }
 
-  private int findPacketIdByClass(Class<? extends Packet> packet) throws Exception {
-    return packet.getConstructor().newInstance().id();
+  public Optional<Class<? extends PacketOutgoing>> findOutgoingPacketById(
+    int id, ProtocolState protocolState
+  ) {
+    return findPacket(id, protocolState, outgoingPackets);
   }
 
-  public Optional<Class<? extends PacketOutgoing>> findOutgoingPacketById(int id) {
-    return Optional.ofNullable(outgoingPackets.get(id));
+  public Optional<Class<? extends PacketIncoming>> findIncomingPacketById(
+    int id, ProtocolState protocolState
+  ) {
+    return findPacket(id, protocolState, incomingPackets);
   }
 
-  public Optional<Class<? extends PacketIncoming>> findIncomingPacketById(int id) {
-    return Optional.ofNullable(incomingPackets.get(id));
+  private <T extends Packet> Optional<Class<? extends T>> findPacket(
+    int id, ProtocolState protocolState, List<T> packetList
+  ) {
+    var packetOptional = packetList.stream().filter(entry -> entry.id() == id)
+      .filter(entry -> entry.protocolState() == protocolState).findFirst();
+    return packetOptional.map(packet -> (Class<? extends T>) packet.getClass());
   }
 }

@@ -1,5 +1,6 @@
 package de.lukasbreuer.bot.connection.packet.outbound.login;
 
+import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
 
@@ -8,13 +9,13 @@ public final class PacketEncryptionResponse extends PacketOutgoing {
   private final byte[] verifyToken;
 
   public PacketEncryptionResponse(byte[] sharedSecret, byte[] verifyToken) {
-    super(0x01);
+    super(0x01, ProtocolState.LOGIN);
     this.sharedSecret = sharedSecret;
     this.verifyToken = verifyToken;
   }
 
   public PacketEncryptionResponse() {
-    super(0x01);
+    super(0x01, ProtocolState.LOGIN);
     this.sharedSecret = new byte[0];
     this.verifyToken = new byte[0];
   }

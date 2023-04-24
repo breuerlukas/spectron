@@ -3,7 +3,6 @@ package de.lukasbreuer.bot.connection.channel;
 import de.lukasbreuer.bot.connection.packet.inbound.PacketIncoming;
 import de.lukasbreuer.bot.connection.packet.inbound.login.*;
 import de.lukasbreuer.bot.connection.packet.inbound.play.PacketDisconnect;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketIncomingPlay;
 import de.lukasbreuer.bot.connection.packet.inbound.play.PacketKeepAliveRequest;
 import de.lukasbreuer.bot.event.EventExecutor;
 import de.lukasbreuer.bot.event.login.EncryptionRequestEvent;
@@ -24,11 +23,11 @@ public final class ChannelPacketInbox extends SimpleChannelInboundHandler<Packet
   protected void channelRead0(
     ChannelHandlerContext context, PacketIncoming incomingPacket
   ) {
-    if (incomingPacket instanceof PacketIncomingLogin) {
+    if (incomingPacket.protocolState().isLogin()) {
       processIncomingLoginPacket(incomingPacket);
       return;
     }
-    if (incomingPacket instanceof PacketIncomingPlay) {
+    if (incomingPacket.protocolState().isPlay()) {
       processIncomingPlayPacket(incomingPacket);
     }
   }

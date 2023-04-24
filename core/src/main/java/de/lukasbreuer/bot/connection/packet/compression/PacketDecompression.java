@@ -15,7 +15,9 @@ public final class PacketDecompression extends ByteToMessageDecoder {
   private final Inflater inflater = new Inflater();
 
   @Override
-  protected void decode(ChannelHandlerContext context, ByteBuf buffer, List<Object> list) {
+  protected void decode(
+    ChannelHandlerContext context, ByteBuf buffer, List<Object> list
+  ) {
     if (buffer.readableBytes() != 0) {
       var tempBuffer = PacketBuffer.create(buffer);
       var dataLength = tempBuffer.readVarInt();
@@ -26,7 +28,6 @@ public final class PacketDecompression extends ByteToMessageDecoder {
           var decompressed = decompress(tempBuffer.raw(), dataLength);
           list.add(decompressed);
         } catch (Exception exception) {
-
         }
       }
     }

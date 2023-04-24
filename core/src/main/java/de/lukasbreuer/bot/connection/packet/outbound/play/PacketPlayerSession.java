@@ -1,5 +1,6 @@
 package de.lukasbreuer.bot.connection.packet.outbound.play;
 
+import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
 
@@ -14,7 +15,7 @@ public final class PacketPlayerSession extends PacketOutgoing {
   public PacketPlayerSession(
     UUID sessionId, long expiration, byte[] publicKey, byte[] keySignature
   ) {
-    super(0x06);
+    super(0x06, ProtocolState.PLAY);
     this.sessionId = sessionId;
     this.expiration = expiration;
     this.publicKey = publicKey;
@@ -22,7 +23,7 @@ public final class PacketPlayerSession extends PacketOutgoing {
   }
 
   public PacketPlayerSession() {
-    super(0x06);
+    super(0x06, ProtocolState.PLAY);
     this.sessionId = null;
     this.expiration = -1;
     this.publicKey = null;

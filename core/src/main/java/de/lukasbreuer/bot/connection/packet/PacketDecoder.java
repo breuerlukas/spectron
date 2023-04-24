@@ -11,7 +11,10 @@ import java.util.List;
 @RequiredArgsConstructor(staticName = "create")
 public final class PacketDecoder extends ByteToMessageDecoder {
   @Override
-  protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) {
+  protected void decode(
+    ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf,
+    List<Object> list
+  ) {
     if (byteBuf.readableBytes() >= 3) {
       var buffer = PacketBuffer.create(byteBuf);
       buffer.raw().markReaderIndex();

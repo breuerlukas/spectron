@@ -1,18 +1,20 @@
 package de.lukasbreuer.bot.connection.packet.inbound.login;
 
+import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
+import de.lukasbreuer.bot.connection.packet.inbound.PacketIncoming;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
-public final class PacketEncryptionRequest extends PacketIncomingLogin {
+public final class PacketEncryptionRequest extends PacketIncoming {
   private String serverId;
   private byte[] publicKey;
   private byte[] verifyToken;
 
   public PacketEncryptionRequest() {
-    super(0x01);
+    super(0x01, ProtocolState.LOGIN);
   }
 
   @Override

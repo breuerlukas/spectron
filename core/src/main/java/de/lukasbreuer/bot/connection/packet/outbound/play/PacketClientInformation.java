@@ -1,5 +1,6 @@
 package de.lukasbreuer.bot.connection.packet.outbound.play;
 
+import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
 
@@ -17,7 +18,7 @@ public final class PacketClientInformation extends PacketOutgoing {
     String locale, int viewDistance, int chatMode, boolean chatColors,
     byte skinParts, int mainHand, boolean textFiltering, boolean serverListing
   ) {
-    super(0x08);
+    super(0x08, ProtocolState.PLAY);
     this.locale = locale;
     this.viewDistance = viewDistance;
     this.chatMode = chatMode;
@@ -29,7 +30,7 @@ public final class PacketClientInformation extends PacketOutgoing {
   }
 
   public PacketClientInformation() {
-    super(0x08);
+    super(0x08, ProtocolState.PLAY);
     this.locale = "";
     this.viewDistance = -1;
     this.chatMode = -1;

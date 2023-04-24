@@ -1,5 +1,6 @@
 package de.lukasbreuer.bot.connection.packet.outbound.play;
 
+import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
 
@@ -14,7 +15,7 @@ public final class PacketChatMessage extends PacketOutgoing {
   public PacketChatMessage(
     String message, long timestamp, long salt, byte[] signature
   ) {
-    super(0x05);
+    super(0x05, ProtocolState.PLAY);
     this.message = message;
     this.timestamp = timestamp;
     this.salt = salt;
@@ -22,7 +23,7 @@ public final class PacketChatMessage extends PacketOutgoing {
   }
 
   public PacketChatMessage() {
-    super(0x05);
+    super(0x05, ProtocolState.PLAY);
     this.message = "";
     this.timestamp = -1;
     this.salt = -1;

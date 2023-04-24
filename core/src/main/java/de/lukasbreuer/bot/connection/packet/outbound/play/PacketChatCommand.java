@@ -1,5 +1,6 @@
 package de.lukasbreuer.bot.connection.packet.outbound.play;
 
+import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public final class PacketChatCommand extends PacketOutgoing {
   public PacketChatCommand(
     String command, long timestamp, long salt, Argument[] arguments
   ) {
-    super(0x04);
+    super(0x04, ProtocolState.PLAY);
     this.command = command;
     this.timestamp = timestamp;
     this.salt = salt;
@@ -36,7 +37,7 @@ public final class PacketChatCommand extends PacketOutgoing {
   }
 
   public PacketChatCommand() {
-    super(0x04);
+    super(0x04, ProtocolState.PLAY);
     this.command = "";
     this.timestamp = -1;
     this.salt = -1;

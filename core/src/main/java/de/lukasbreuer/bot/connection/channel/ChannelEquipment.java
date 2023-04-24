@@ -20,7 +20,9 @@ public final class ChannelEquipment extends ChannelInitializer<Channel> {
   protected void initChannel(Channel channel) {
     channel.pipeline().addLast("packet-encoder", PacketEncoder.create(client));
     channel.pipeline().addLast("packet-decoder", PacketDecoder.create());
-    channel.pipeline().addLast("packet-identification", PacketIdentification.create(packetRegistry));
-    channel.pipeline().addLast("packet-inbox", ChannelPacketInbox.create(eventExecutor));
+    channel.pipeline().addLast("packet-identification",
+      PacketIdentification.create(client, packetRegistry));
+    channel.pipeline().addLast("packet-inbox",
+      ChannelPacketInbox.create(eventExecutor));
   }
 }

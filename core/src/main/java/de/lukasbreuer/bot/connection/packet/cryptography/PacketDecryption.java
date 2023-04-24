@@ -17,11 +17,14 @@ public final class PacketDecryption extends ByteToMessageDecoder {
   }
 
   private final Cipher cipher;
-  private boolean a = false;
-  private int c = 0;
 
   @Override
-  protected void decode(ChannelHandlerContext context, ByteBuf buffer, List<Object> list) throws Exception {
-    list.add(cipher.decrypt(context, buffer));
+  protected void decode(
+    ChannelHandlerContext context, ByteBuf buffer, List<Object> list
+  ) {
+    try {
+      list.add(cipher.decrypt(context, buffer));
+    } catch (Exception exception) {
+    }
   }
 }

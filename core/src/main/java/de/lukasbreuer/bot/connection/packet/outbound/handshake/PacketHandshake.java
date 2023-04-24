@@ -1,5 +1,6 @@
 package de.lukasbreuer.bot.connection.packet.outbound.handshake;
 
+import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.PacketBuffer;
 import de.lukasbreuer.bot.connection.packet.outbound.PacketOutgoing;
 
@@ -11,14 +12,14 @@ public final class PacketHandshake extends PacketOutgoing {
   public PacketHandshake(
     int protocolVersion, String serverAddress, short serverPort
   ) {
-    super(0x00);
+    super(0x00, ProtocolState.HANDSHAKE);
     this.protocolVersion = protocolVersion;
     this.serverAddress = serverAddress;
     this.serverPort = serverPort;
   }
 
   public PacketHandshake() {
-    super(0x00);
+    super(0x00, ProtocolState.HANDSHAKE);
     this.protocolVersion = -1;
     this.serverAddress = "";
     this.serverPort = -1;
