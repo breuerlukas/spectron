@@ -23,15 +23,6 @@ public final class PacketLoginSuccess extends PacketIncoming {
       this.value = value;
       this.signature = signature;
     }
-
-    @Override
-    public String toString() {
-      return "Property{" +
-        "name='" + name + '\'' +
-        ", value='" + value + '\'' +
-        ", signature='" + signature + '\'' +
-        '}';
-    }
   }
 
   private UUID uuid;
