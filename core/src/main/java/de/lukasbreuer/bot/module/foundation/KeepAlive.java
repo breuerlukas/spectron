@@ -13,7 +13,6 @@ public final class KeepAlive implements Hook {
 
   @EventHook
   private void keepAlive(KeepAliveEvent event) {
-    System.out.println("Received keep alive " + event.number());
     client.sendPacket(new PacketKeepAliveResponse(event.number()));
   }
 }
