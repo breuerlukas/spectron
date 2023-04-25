@@ -28,6 +28,7 @@ public final class PacketDecompression extends ByteToMessageDecoder {
           var decompressed = decompress(tempBuffer.raw(), dataLength);
           list.add(decompressed);
         } catch (Exception exception) {
+          exception.printStackTrace();
         }
       }
     }

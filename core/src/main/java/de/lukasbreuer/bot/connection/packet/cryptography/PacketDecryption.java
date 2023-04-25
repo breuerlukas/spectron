@@ -25,6 +25,7 @@ public final class PacketDecryption extends ByteToMessageDecoder {
     try {
       list.add(cipher.decrypt(context, buffer));
     } catch (Exception exception) {
+      exception.printStackTrace();
     }
   }
 }
