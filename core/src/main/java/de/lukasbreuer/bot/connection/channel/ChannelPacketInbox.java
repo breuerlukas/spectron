@@ -2,6 +2,7 @@ package de.lukasbreuer.bot.connection.channel;
 
 import de.lukasbreuer.bot.connection.packet.inbound.PacketIncoming;
 import de.lukasbreuer.bot.connection.packet.inbound.login.*;
+import de.lukasbreuer.bot.connection.packet.inbound.play.PacketChatMessage;
 import de.lukasbreuer.bot.connection.packet.inbound.play.PacketDisconnect;
 import de.lukasbreuer.bot.connection.packet.inbound.play.PacketKeepAliveRequest;
 import de.lukasbreuer.bot.event.EventExecutor;
@@ -9,6 +10,7 @@ import de.lukasbreuer.bot.event.login.EncryptionRequestEvent;
 import de.lukasbreuer.bot.event.login.LoginDisconnectEvent;
 import de.lukasbreuer.bot.event.login.LoginSuccessEvent;
 import de.lukasbreuer.bot.event.login.SetCompressionEvent;
+import de.lukasbreuer.bot.event.play.ChatMessageEvent;
 import de.lukasbreuer.bot.event.play.DisconnectEvent;
 import de.lukasbreuer.bot.event.play.KeepAliveEvent;
 import io.netty.channel.ChannelHandlerContext;
@@ -51,6 +53,9 @@ public final class ChannelPacketInbox extends SimpleChannelInboundHandler<Packet
       eventExecutor.execute(DisconnectEvent.create(packet.reason()));
     } else if (incomingPacket instanceof PacketKeepAliveRequest packet) {
       eventExecutor.execute(KeepAliveEvent.create(packet.number()));
+    } else if (incomingPacket instanceof PacketChatMessage packet) {
+      eventExecutor.execute(ChatMessageEvent.create(packet.senderId(),
+        packet.message(), packet.timestamp()));
     }
   }
 }

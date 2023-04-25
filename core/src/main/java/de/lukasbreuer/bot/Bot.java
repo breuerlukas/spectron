@@ -15,7 +15,10 @@ import de.lukasbreuer.bot.connection.packet.inbound.play.PacketKeepAliveRequest;
 import de.lukasbreuer.bot.connection.packet.outbound.handshake.PacketHandshake;
 import de.lukasbreuer.bot.connection.packet.outbound.login.PacketEncryptionResponse;
 import de.lukasbreuer.bot.connection.packet.outbound.login.PacketLoginStart;
-import de.lukasbreuer.bot.connection.packet.outbound.play.*;
+import de.lukasbreuer.bot.connection.packet.outbound.play.PacketChatCommand;
+import de.lukasbreuer.bot.connection.packet.outbound.play.PacketClientInformation;
+import de.lukasbreuer.bot.connection.packet.outbound.play.PacketKeepAliveResponse;
+import de.lukasbreuer.bot.connection.packet.outbound.play.PacketPlayerSession;
 import de.lukasbreuer.bot.event.EventExecutor;
 import de.lukasbreuer.bot.event.HookRegistry;
 import de.lukasbreuer.bot.event.module.EnableModuleEvent;
@@ -83,7 +86,8 @@ public final class Bot {
     registry.registerOutgoingPacket(PacketClientInformation.class);
     registry.registerOutgoingPacket(PacketPlayerSession.class);
     registry.registerOutgoingPacket(PacketKeepAliveResponse.class);
-    registry.registerOutgoingPacket(PacketChatMessage.class);
+    registry.registerOutgoingPacket(de.lukasbreuer.bot.connection.packet.
+      outbound.play.PacketChatMessage.class);
     registry.registerOutgoingPacket(PacketChatCommand.class);
   }
 
@@ -94,5 +98,7 @@ public final class Bot {
     registry.registerIncomingPacket(PacketLoginSuccess.class);
     registry.registerIncomingPacket(PacketDisconnect.class);
     registry.registerIncomingPacket(PacketKeepAliveRequest.class);
+    registry.registerIncomingPacket(de.lukasbreuer.bot.connection.packet.
+      inbound.play.PacketChatMessage.class);
   }
 }
