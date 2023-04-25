@@ -7,6 +7,7 @@ import de.lukasbreuer.bot.connection.packet.outbound.play.PacketClientInformatio
 import de.lukasbreuer.bot.connection.packet.outbound.play.PacketPlayerSession;
 import de.lukasbreuer.bot.event.EventHook;
 import de.lukasbreuer.bot.event.Hook;
+import de.lukasbreuer.bot.event.HookPriority;
 import de.lukasbreuer.bot.event.login.LoginSuccessEvent;
 import lombok.RequiredArgsConstructor;
 
@@ -19,13 +20,14 @@ public final class LoginSuccess implements Hook {
   private final ConnectionClient client;
   private final Authentication authentication;
 
-  @EventHook
+  @EventHook(priority = HookPriority.FIRST)
   private void loginSuccess(LoginSuccessEvent event) {
     client.protocolState(ProtocolState.PLAY);
     System.out.println("Login success");
     System.out.println("Username: " + event.username());
     System.out.println("UUID: " + event.uuid());
     var sessionId = UUID.randomUUID();
+    client.sessionId(sessionId);
     sendClientInformationPacket();
     sendPlayerSessionPacket(sessionId);
   }
