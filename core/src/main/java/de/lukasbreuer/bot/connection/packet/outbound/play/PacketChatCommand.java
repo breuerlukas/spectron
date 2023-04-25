@@ -11,7 +11,7 @@ import java.util.BitSet;
 public final class PacketChatCommand extends PacketOutgoing {
   @Getter
   @Accessors(fluent = true)
-  public class Argument {
+  public static class Argument {
     private final String argument;
     private final byte[] signature;
 

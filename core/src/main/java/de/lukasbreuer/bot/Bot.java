@@ -25,6 +25,8 @@ import de.lukasbreuer.bot.event.module.EnableModuleEvent;
 import de.lukasbreuer.bot.event.module.LoadModuleEvent;
 import de.lukasbreuer.bot.log.Log;
 import de.lukasbreuer.bot.module.Module;
+import de.lukasbreuer.bot.module.command.CommandModule;
+import de.lukasbreuer.bot.module.command.CommandRegistry;
 import de.lukasbreuer.bot.module.foundation.FoundationModule;
 import de.lukasbreuer.bot.module.login.LoginModule;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,7 @@ public final class Bot {
   private Log log;
   private Authentication authentication;
   private EventExecutor eventExecutor;
+  private CommandRegistry commandRegistry;
   private HookRegistry hookRegistry;
   private ConnectionClient client;
 
@@ -49,6 +52,7 @@ public final class Bot {
     injector = Guice.createInjector(BotInjectionModule.create());
     log = Log.create("Core", "/logs/core/");
     authentication = Authentication.create(credentials, uuid);
+    commandRegistry = injector.getInstance(CommandRegistry.class);
     eventExecutor = injector.getInstance(EventExecutor.class);
     hookRegistry = injector.getInstance(HookRegistry.class);
   }
@@ -60,6 +64,8 @@ public final class Bot {
   }
 
   private void runModules() {
+    runModule(CommandModule.create(log, commandRegistry, client,
+      authentication, uuid));
     runModule(LoginModule.create(client, hostname, port, 762, username, uuid,
       authentication, hookRegistry));
     runModule(FoundationModule.create(client, hookRegistry));
