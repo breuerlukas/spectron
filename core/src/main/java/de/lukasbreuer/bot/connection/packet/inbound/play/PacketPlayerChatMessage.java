@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Accessors(fluent = true)
-public final class PacketChatMessage extends PacketIncoming {
+public final class PacketPlayerChatMessage extends PacketIncoming {
   private UUID senderId;
   private int index;
   private byte[] messageSignature;
@@ -18,7 +18,7 @@ public final class PacketChatMessage extends PacketIncoming {
   private long timestamp;
   private long salt;
 
-  public PacketChatMessage() {
+  public PacketPlayerChatMessage() {
     super(0x35, ProtocolState.PLAY);
   }
 

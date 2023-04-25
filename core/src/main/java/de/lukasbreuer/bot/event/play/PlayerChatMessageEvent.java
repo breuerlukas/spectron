@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor(staticName = "create")
-public final class ChatMessageEvent extends Event {
+public final class PlayerChatMessageEvent extends Event {
   private final UUID senderId;
   private final String message;
   private final long timestamp;
