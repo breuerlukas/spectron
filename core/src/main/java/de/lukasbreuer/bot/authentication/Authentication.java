@@ -20,7 +20,7 @@ public final class Authentication {
     var futureResult = new CompletableFuture<Boolean>();
     microsoftLogin().thenAccept(result ->
       minecraftLogin(result.accessToken(), result.userHash()).thenAccept(accessToken ->
-        minecraftClientAuthentication(serverHash, accessToken).thenAccept(futureResult::complete)));
+        joinMinecraftServer(serverHash, accessToken).thenAccept(futureResult::complete)));
     return futureResult;
   }
 
@@ -43,27 +43,18 @@ public final class Authentication {
     return future;
   }
 
-  private CompletableFuture<Boolean> minecraftClientAuthentication(
-    String serverHash, String accessToken
-  ) {
-    var futureResult = new CompletableFuture<Boolean>();
-    certificatePlayer(accessToken).thenAccept(certificate ->
-      joinMinecraftServer(serverHash, accessToken).thenAccept(futureResult::complete));
-    return futureResult;
-  }
-
-  private CompletableFuture<PlayerCertificate> certificatePlayer(String accessToken) {
-    var future = new CompletableFuture<PlayerCertificate>();
-    future.thenAccept(certificate -> playerCertificate = certificate);
-    MinecraftCertificateRequest.create(accessToken).send()
-      .thenAccept(future::complete);
-    return future;
-  }
-
   private CompletableFuture<Boolean> joinMinecraftServer(
     String serverHash, String accessToken
   ) {
     return MinecraftJoinServerRequest.create(accessToken,
       playerUuid.toString().replace("-", ""), serverHash).send();
+  }
+
+  public CompletableFuture<PlayerCertificate> certificatePlayer() {
+    var future = new CompletableFuture<PlayerCertificate>();
+    future.thenAccept(certificate -> playerCertificate = certificate);
+    MinecraftCertificateRequest.create(minecraftAccessToken).send()
+      .thenAccept(future::complete);
+    return future;
   }
 }

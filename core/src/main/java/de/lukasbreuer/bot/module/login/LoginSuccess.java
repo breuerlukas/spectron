@@ -1,6 +1,7 @@
 package de.lukasbreuer.bot.module.login;
 
 import de.lukasbreuer.bot.authentication.Authentication;
+import de.lukasbreuer.bot.authentication.PlayerCertificate;
 import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.outbound.play.PacketClientInformation;
@@ -29,7 +30,8 @@ public final class LoginSuccess implements Hook {
     var sessionId = UUID.randomUUID();
     client.sessionId(sessionId);
     sendClientInformationPacket();
-    sendPlayerSessionPacket(sessionId);
+    authentication.certificatePlayer().thenAccept(certificate ->
+      sendPlayerSessionPacket(sessionId, certificate));
   }
 
   private void sendClientInformationPacket() {
@@ -37,8 +39,7 @@ public final class LoginSuccess implements Hook {
       (byte) (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20 | 0x40), 1, false, true));
   }
 
-  private void sendPlayerSessionPacket(UUID sessionId) {
-    var certificate = authentication.playerCertificate();
+  private void sendPlayerSessionPacket(UUID sessionId, PlayerCertificate certificate) {
     client.sendPacket(new PacketPlayerSession(sessionId,
       certificate.expiration(), certificate.publicKey().getEncoded(),
       ByteBuffer.wrap(Base64.getDecoder().decode(certificate.publicKeySignature()))
