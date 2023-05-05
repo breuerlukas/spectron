@@ -1,4 +1,4 @@
-package de.lukasbreuer.bot.module.command.implementation;
+package de.lukasbreuer.bot.module.command.essential;
 
 import de.lukasbreuer.bot.log.Log;
 import de.lukasbreuer.bot.module.command.Command;

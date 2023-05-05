@@ -4,8 +4,8 @@ import de.lukasbreuer.bot.authentication.Authentication;
 import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.log.Log;
 import de.lukasbreuer.bot.module.Module;
-import de.lukasbreuer.bot.module.command.implementation.ChatCommand;
-import de.lukasbreuer.bot.module.command.implementation.HelpCommand;
+import de.lukasbreuer.bot.module.command.essential.ChatCommand;
+import de.lukasbreuer.bot.module.command.essential.HelpCommand;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;

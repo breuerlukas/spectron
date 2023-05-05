@@ -1,4 +1,4 @@
-package de.lukasbreuer.bot.module.command.implementation;
+package de.lukasbreuer.bot.module.command.essential;
 
 import de.lukasbreuer.bot.authentication.Authentication;
 import de.lukasbreuer.bot.chat.ChatSignature;
