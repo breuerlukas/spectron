@@ -35,7 +35,8 @@ public final class LoginModule extends Module {
 
   private void registerHooks() {
     hookRegistry.register(LoginFailure.create());
-    hookRegistry.register(LoginAssignments.create(client, authentication));
+    hookRegistry.register(LoginEncryptionRequest.create(client, authentication));
+    hookRegistry.register(LoginCompressionRequest.create(client));
     hookRegistry.register(LoginSuccess.create(client, authentication));
   }
 

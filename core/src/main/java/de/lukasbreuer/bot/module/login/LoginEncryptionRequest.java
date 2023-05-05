@@ -2,9 +2,6 @@ package de.lukasbreuer.bot.module.login;
 
 import de.lukasbreuer.bot.authentication.Authentication;
 import de.lukasbreuer.bot.connection.ConnectionClient;
-import de.lukasbreuer.bot.connection.packet.compression.CompressionStatus;
-import de.lukasbreuer.bot.connection.packet.compression.PacketCompression;
-import de.lukasbreuer.bot.connection.packet.compression.PacketDecompression;
 import de.lukasbreuer.bot.connection.packet.cryptography.CryptographyStatus;
 import de.lukasbreuer.bot.connection.packet.cryptography.PacketDecryption;
 import de.lukasbreuer.bot.connection.packet.cryptography.PacketEncryption;
@@ -12,7 +9,6 @@ import de.lukasbreuer.bot.connection.packet.outbound.login.PacketEncryptionRespo
 import de.lukasbreuer.bot.event.EventHook;
 import de.lukasbreuer.bot.event.Hook;
 import de.lukasbreuer.bot.event.login.EncryptionRequestEvent;
-import de.lukasbreuer.bot.event.login.SetCompressionEvent;
 import lombok.RequiredArgsConstructor;
 
 import javax.crypto.Cipher;
@@ -24,7 +20,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.UUID;
 
 @RequiredArgsConstructor(staticName = "create")
-public final class LoginAssignments implements Hook {
+public final class LoginEncryptionRequest implements Hook {
   private final ConnectionClient client;
   private final Authentication authentication;
 
@@ -78,15 +74,5 @@ public final class LoginAssignments implements Hook {
     var cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
     cipher.init(Cipher.ENCRYPT_MODE, publicKey);
     return cipher.doFinal(data);
-  }
-
-  @EventHook
-  private void setCompression(SetCompressionEvent event) {
-    var pipeline = client.channel().pipeline();
-    pipeline.addBefore("packet-encoder", "packet-compression",
-      PacketCompression.create());
-    pipeline.addAfter("packet-decoder", "packet-decompression",
-      PacketDecompression.create());
-    client.compressionStatus(CompressionStatus.ENABLED);
   }
 }
