@@ -12,12 +12,8 @@ public final class BlockPosition {
   private final long y;
   private final long z;
 
-  @Override
-  public String toString() {
-    return "BlockPosition{" +
-      "x=" + x +
-      ", y=" + y +
-      ", z=" + z +
-      '}';
+  public boolean equals(BlockPosition otherPosition) {
+    return x == otherPosition.x() && y == otherPosition.y() &&
+      z == otherPosition.z();
   }
 }
