@@ -22,6 +22,8 @@ public final class FoundationModule extends Module {
 
   private void registerHooks() {
     hookRegistry.register(KeepAlive.create(client));
+    hookRegistry.register(PlayerDisconnect.create());
+    hookRegistry.register(SynchronizePlayerPosition.create(client));
   }
 
   @Override
