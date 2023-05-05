@@ -2,19 +2,13 @@ package de.lukasbreuer.bot.connection.channel;
 
 import de.lukasbreuer.bot.connection.packet.inbound.PacketIncoming;
 import de.lukasbreuer.bot.connection.packet.inbound.login.*;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketPlayerChatMessage;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketDisconnect;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketKeepAliveRequest;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketSystemChatMessage;
+import de.lukasbreuer.bot.connection.packet.inbound.play.*;
 import de.lukasbreuer.bot.event.EventExecutor;
 import de.lukasbreuer.bot.event.login.EncryptionRequestEvent;
 import de.lukasbreuer.bot.event.login.LoginDisconnectEvent;
 import de.lukasbreuer.bot.event.login.LoginSuccessEvent;
 import de.lukasbreuer.bot.event.login.SetCompressionEvent;
-import de.lukasbreuer.bot.event.play.PlayerChatMessageEvent;
-import de.lukasbreuer.bot.event.play.DisconnectEvent;
-import de.lukasbreuer.bot.event.play.KeepAliveEvent;
-import de.lukasbreuer.bot.event.play.SystemChatMessageEvent;
+import de.lukasbreuer.bot.event.play.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +55,10 @@ public final class ChannelPacketInbox extends SimpleChannelInboundHandler<Packet
     } else if (incomingPacket instanceof PacketSystemChatMessage packet) {
       eventExecutor.execute(SystemChatMessageEvent.create(packet.content(),
         packet.displayType()));
+    } else if (incomingPacket instanceof PacketSynchronizePlayerPosition packet) {
+      eventExecutor.execute(SynchronizePlayerPositionEvent.create(packet.x(),
+        packet.y(), packet.z(), packet.yaw(), packet.pitch(), packet.flags(),
+        packet.teleportId()));
     }
   }
 }
