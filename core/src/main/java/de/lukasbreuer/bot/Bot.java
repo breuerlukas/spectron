@@ -10,10 +10,7 @@ import de.lukasbreuer.bot.connection.packet.inbound.login.PacketEncryptionReques
 import de.lukasbreuer.bot.connection.packet.inbound.login.PacketLoginDisconnect;
 import de.lukasbreuer.bot.connection.packet.inbound.login.PacketLoginSuccess;
 import de.lukasbreuer.bot.connection.packet.inbound.login.PacketSetCompression;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketDisconnect;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketKeepAliveRequest;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketPlayerChatMessage;
-import de.lukasbreuer.bot.connection.packet.inbound.play.PacketSystemChatMessage;
+import de.lukasbreuer.bot.connection.packet.inbound.play.*;
 import de.lukasbreuer.bot.connection.packet.outbound.handshake.PacketHandshake;
 import de.lukasbreuer.bot.connection.packet.outbound.login.PacketEncryptionResponse;
 import de.lukasbreuer.bot.connection.packet.outbound.login.PacketLoginStart;
@@ -93,6 +90,10 @@ public final class Bot {
     registry.registerOutgoingPacket(PacketKeepAliveResponse.class);
     registry.registerOutgoingPacket(PacketChatMessage.class);
     registry.registerOutgoingPacket(PacketChatCommand.class);
+    registry.registerOutgoingPacket(PacketConfirmTeleportation.class);
+    registry.registerOutgoingPacket(PacketSetPlayerPosition.class);
+    registry.registerOutgoingPacket(PacketSetPlayerRotation.class);
+    registry.registerOutgoingPacket(PacketPlayerAction.class);
   }
 
   private void registerIncomingPackets(PacketRegistry registry) throws Exception {
@@ -104,5 +105,6 @@ public final class Bot {
     registry.registerIncomingPacket(PacketKeepAliveRequest.class);
     registry.registerIncomingPacket(PacketPlayerChatMessage.class);
     registry.registerIncomingPacket(PacketSystemChatMessage.class);
+    registry.registerIncomingPacket(PacketSynchronizePlayerPosition.class);
   }
 }
