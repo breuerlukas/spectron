@@ -1,5 +1,6 @@
 package de.lukasbreuer.bot.connection.packet;
 
+import de.lukasbreuer.bot.block.BlockPosition;
 import io.netty.buffer.ByteBuf;
 import lombok.RequiredArgsConstructor;
 
@@ -52,6 +53,11 @@ public final class PacketBuffer {
     buffer.writeLong(uuid.getLeastSignificantBits());
   }
 
+  public void writeBlockPosition(BlockPosition position) {
+    buffer.writeLong(((position.x() & 0x3FFFFFF) << 38) |
+      ((position.z() & 0x3FFFFFF) << 12) | (position.y() & 0xFFF));
+  }
+
   public void writeBitSet(BitSet bits, int size) {
     buffer.writeBytes(Arrays.copyOf(bits.toByteArray(), (size + 8) >> 3));
   }
@@ -78,6 +84,11 @@ public final class PacketBuffer {
     var mostSignificantBits = buffer.readLong();
     var leastSignificantBits = buffer.readLong();
     return new UUID(mostSignificantBits, leastSignificantBits);
+  }
+
+  public BlockPosition readBlockPosition() {
+    var value = buffer.readLong();
+    return BlockPosition.create(value >> 38, value << 52 >> 52, value << 26 >> 38);
   }
 
   public ByteBuf raw() {
