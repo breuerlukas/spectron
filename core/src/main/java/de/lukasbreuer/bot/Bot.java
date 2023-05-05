@@ -25,6 +25,7 @@ import de.lukasbreuer.bot.module.command.CommandModule;
 import de.lukasbreuer.bot.module.command.CommandRegistry;
 import de.lukasbreuer.bot.module.foundation.FoundationModule;
 import de.lukasbreuer.bot.module.login.LoginModule;
+import de.lukasbreuer.bot.player.PlayerLocation;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
@@ -36,6 +37,7 @@ public final class Bot {
   private final Credentials credentials;
   private final String username;
   private final UUID uuid;
+  private final PlayerLocation playerLocation = PlayerLocation.create(0, 0, 0, 0, 0);
   private Injector injector;
   private Log log;
   private Authentication authentication;
@@ -64,7 +66,7 @@ public final class Bot {
       authentication, uuid));
     runModule(LoginModule.create(client, hostname, port, 762, username, uuid,
       authentication, hookRegistry));
-    runModule(FoundationModule.create(client, hookRegistry));
+    runModule(FoundationModule.create(client, hookRegistry, playerLocation));
   }
 
   private void runModule(Module module) {
