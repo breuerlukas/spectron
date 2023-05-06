@@ -1,15 +1,12 @@
 package de.lukasbreuer.bot.module.command.essential;
 
 import de.lukasbreuer.bot.authentication.Authentication;
-import de.lukasbreuer.bot.chat.ChatSignature;
+import de.lukasbreuer.bot.chat.ChatMessage;
 import de.lukasbreuer.bot.connection.ConnectionClient;
-import de.lukasbreuer.bot.connection.packet.outbound.play.PacketChatCommand;
-import de.lukasbreuer.bot.connection.packet.outbound.play.PacketChatMessage;
 import de.lukasbreuer.bot.log.Log;
 import de.lukasbreuer.bot.module.command.Command;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.UUID;
 
 public final class ChatCommand extends Command {
@@ -47,27 +44,17 @@ public final class ChatCommand extends Command {
   }
 
   private boolean sendChatCommand(String command, String[] arguments) throws Exception {
-    var salt = new Random().nextLong();
-    var timestamp = System.currentTimeMillis();
-    var commandArguments = new PacketChatCommand.Argument[arguments.length];
-    for (var i = 0; i < arguments.length; i++) {
-      var argument = arguments[i];
-      var signature = ChatSignature.create(authentication.playerCertificate().privateKey(),
-        playerUuid, client.sessionId(), salt, timestamp, argument);
-      commandArguments[i] = new PacketChatCommand.Argument(argument,
-        signature.sign());
-    }
-    client.sendPacket(new PacketChatCommand(command, timestamp, salt,
-      commandArguments));
+    var chatCommand = de.lukasbreuer.bot.chat.ChatCommand.create(client,
+      authentication, playerUuid, command, arguments);
+    chatCommand.send();
     log().info("You have successfully sent the message \"/" + command + "\"");
     return true;
   }
 
   private boolean sendChatMessage(String message) throws Exception {
-    var signature = ChatSignature.create(authentication.playerCertificate().privateKey(),
-      playerUuid, client.sessionId(), message);
-    client.sendPacket(new PacketChatMessage(message, signature.timestamp(),
-      signature.salt(), signature.sign()));
+    var chatMessage = ChatMessage.create(client, authentication, playerUuid,
+      message);
+    chatMessage.send();
     log().info("You have successfully sent the message \"" + message + "\"");
     return true;
   }
