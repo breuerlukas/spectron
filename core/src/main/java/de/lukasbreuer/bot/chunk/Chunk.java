@@ -5,6 +5,7 @@ import de.lukasbreuer.bot.block.BlockPosition;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
+import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,10 @@ import java.util.Optional;
 @Accessors(fluent = true)
 @RequiredArgsConstructor(staticName = "create")
 public final class Chunk {
+  public static Chunk empty(int x, int z) {
+    return create(x, z, Lists.newArrayList());
+  }
+
   private final int x;
   private final int z;
   private final List<Block> blocks;
