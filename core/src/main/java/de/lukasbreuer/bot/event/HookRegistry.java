@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE, onConstructor = @__({@Inject}))
@@ -19,6 +20,16 @@ public final class HookRegistry {
 
   public void unregister(Hook hook) {
     hooks.remove(hook);
+  }
+
+  public void unregister(Class<? extends Hook> hookClass) {
+    findByClass(hookClass).ifPresent(this::unregister);
+  }
+
+  public Optional<Hook> findByClass(Class<? extends Hook> hookClass) {
+    return hooks.stream()
+      .filter(hook -> hook.getClass().equals(hookClass))
+      .findFirst();
   }
 
   public List<Hook> findAll() {

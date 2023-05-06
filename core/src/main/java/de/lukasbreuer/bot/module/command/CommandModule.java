@@ -25,6 +25,7 @@ public final class CommandModule extends Module {
   @Inject
   @Named("uuid")
   private UUID playerUuid;
+  private Thread commandTaskThread;
 
   @Override
   public void onLoad() {
@@ -34,7 +35,9 @@ public final class CommandModule extends Module {
   @Override
   public void onEnable() {
     registerCommands();
-    new Thread(() -> CommandTask.create(log, commandRegistry).start()).start();
+    commandTaskThread = new Thread(() ->
+      CommandTask.create(log, commandRegistry).start());
+    commandTaskThread.start();
   }
 
   private void registerCommands() {
@@ -45,6 +48,7 @@ public final class CommandModule extends Module {
 
   @Override
   public void onDisable() {
+    commandTaskThread.interrupt();
     unregisterCommands();
   }
 

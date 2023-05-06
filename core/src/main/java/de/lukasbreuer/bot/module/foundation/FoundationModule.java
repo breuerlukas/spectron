@@ -34,6 +34,8 @@ public final class FoundationModule extends Module {
 
   @Override
   public void onDisable() {
-
+    hookRegistry.unregister(KeepAlive.class);
+    hookRegistry.unregister(PlayerDisconnect.class);
+    hookRegistry.unregister(SynchronizePlayerPosition.class);
   }
 }

@@ -63,6 +63,9 @@ public final class LoginModule extends Module {
 
   @Override
   public void onDisable() {
-
+    hookRegistry.unregister(LoginFailure.class);
+    hookRegistry.unregister(LoginEncryptionRequest.class);
+    hookRegistry.unregister(LoginCompressionRequest.class);
+    hookRegistry.unregister(LoginSuccess.class);
   }
 }
