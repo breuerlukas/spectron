@@ -1,17 +1,16 @@
 package de.lukasbreuer.bot.authentication;
 
+import de.lukasbreuer.bot.credentials.Credentials;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Accessors(fluent = true)
 @RequiredArgsConstructor(staticName = "create")
 public final class Authentication {
   private final Credentials credentials;
-  private final UUID playerUuid;
   private String minecraftAccessToken;
   @Getter
   private PlayerCertificate playerCertificate;
@@ -47,7 +46,7 @@ public final class Authentication {
     String serverHash, String accessToken
   ) {
     return MinecraftJoinServerRequest.create(accessToken,
-      playerUuid.toString().replace("-", ""), serverHash).send();
+      credentials.uuid().toString().replace("-", ""), serverHash).send();
   }
 
   public CompletableFuture<PlayerCertificate> certificatePlayer() {
