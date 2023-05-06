@@ -1,5 +1,8 @@
 package de.lukasbreuer.bot.module.login;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
 import de.lukasbreuer.bot.authentication.Authentication;
 import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.connection.ProtocolState;
@@ -13,18 +16,30 @@ import java.util.UUID;
 
 @RequiredArgsConstructor(staticName = "create")
 public final class LoginModule extends Module {
+  private final Injector injector;
   private final ConnectionClient client;
-  private final String hostname;
-  private final short port;
-  private final int protocolVersion;
-  private final String username;
-  private final UUID playerUuid;
   private final Authentication authentication;
-  private final HookRegistry hookRegistry;
+  @Inject
+  private HookRegistry hookRegistry;
+  @Inject
+  @Named("hostname")
+  private String hostname;
+  @Inject
+  @Named("port")
+  private short port;
+  @Inject
+  @Named("protocolVersion")
+  private int protocolVersion;
+  @Inject
+  @Named("username")
+  private String username;
+  @Inject
+  @Named("uuid")
+  private UUID playerUuid;
 
   @Override
   public void onLoad() {
-
+    injector.injectMembers(this);
   }
 
   @Override

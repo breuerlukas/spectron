@@ -1,5 +1,7 @@
 package de.lukasbreuer.bot.module.foundation;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.event.HookRegistry;
 import de.lukasbreuer.bot.module.Module;
@@ -8,13 +10,15 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "create")
 public final class FoundationModule extends Module {
+  private final Injector injector;
   private final ConnectionClient client;
-  private final HookRegistry hookRegistry;
   private final PlayerLocation playerLocation;
+  @Inject
+  private HookRegistry hookRegistry;
 
   @Override
   public void onLoad() {
-
+    injector.injectMembers(this);
   }
 
   @Override

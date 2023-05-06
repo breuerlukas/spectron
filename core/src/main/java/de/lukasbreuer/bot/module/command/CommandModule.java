@@ -1,5 +1,8 @@
 package de.lukasbreuer.bot.module.command;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
 import de.lukasbreuer.bot.authentication.Authentication;
 import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.log.Log;
@@ -12,14 +15,20 @@ import java.util.UUID;
 
 @RequiredArgsConstructor(staticName = "create")
 public final class CommandModule extends Module {
-  private final Log log;
-  private final CommandRegistry commandRegistry;
+  private final Injector injector;
   private final ConnectionClient client;
   private final Authentication authentication;
-  private final UUID playerUuid;
+  @Inject
+  private Log log;
+  @Inject
+  private CommandRegistry commandRegistry;
+  @Inject
+  @Named("uuid")
+  private UUID playerUuid;
 
   @Override
   public void onLoad() {
+    injector.injectMembers(this);
   }
 
   @Override
