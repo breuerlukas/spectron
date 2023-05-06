@@ -1,6 +1,8 @@
 package de.lukasbreuer.bot.routine;
 
 import com.google.common.collect.Lists;
+import de.lukasbreuer.bot.chat.ChatCommand;
+import de.lukasbreuer.bot.chat.ChatMessage;
 import de.lukasbreuer.bot.routine.assignment.Assignment;
 import de.lukasbreuer.bot.routine.assignment.ChatAssignment;
 import de.lukasbreuer.bot.routine.assignment.CommandAssignment;
@@ -13,20 +15,24 @@ import java.util.List;
 public final class RoutineBuilder {
   private final List<Assignment> assignments = Lists.newArrayList();
 
-  public void command(CommandAssignment commandAssignment) {
-    assignments.add(commandAssignment);
+  public RoutineBuilder command(ChatCommand command) {
+    assignments.add(CommandAssignment.create(command));
+    return this;
   }
 
-  public void chat(ChatAssignment chatAssignment) {
-    assignments.add(chatAssignment);
+  public RoutineBuilder chat(ChatMessage message) {
+    assignments.add(ChatAssignment.create(message));
+    return this;
   }
 
-  public <T extends Assignment> void individual(T assignment) {
+  public <T extends Assignment> RoutineBuilder individual(T assignment) {
     assignments.add(assignment);
+    return this;
   }
 
-  public void delay(long milliseconds) {
+  public RoutineBuilder delay(long milliseconds) {
     assignments.add(DelayAssignment.create(milliseconds));
+    return this;
   }
 
   public Routine build() {
