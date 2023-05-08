@@ -23,6 +23,7 @@ import de.lukasbreuer.bot.event.module.LoadModuleEvent;
 import de.lukasbreuer.bot.module.Module;
 import de.lukasbreuer.bot.module.command.CommandModule;
 import de.lukasbreuer.bot.module.foundation.FoundationModule;
+import de.lukasbreuer.bot.module.griefergames.GriefergamesModule;
 import de.lukasbreuer.bot.module.login.LoginModule;
 import de.lukasbreuer.bot.player.PlayerLocation;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,8 @@ public final class Bot {
     runModule(CommandModule.create(injector, client, authentication));
     runModule(LoginModule.create(injector, client, authentication));
     runModule(FoundationModule.create(injector, client, playerLocation));
+    runModule(GriefergamesModule.create(injector, client, authentication,
+      playerLocation));
   }
 
   private void runModule(Module module) {
@@ -79,7 +82,6 @@ public final class Bot {
     registry.registerOutgoingPacket(PacketChatCommand.class);
     registry.registerOutgoingPacket(PacketConfirmTeleportation.class);
     registry.registerOutgoingPacket(PacketSetPlayerPosition.class);
-    registry.registerOutgoingPacket(PacketSetPlayerRotation.class);
     registry.registerOutgoingPacket(PacketPlayerAction.class);
   }
 
