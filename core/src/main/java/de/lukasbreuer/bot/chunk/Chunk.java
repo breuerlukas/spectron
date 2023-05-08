@@ -2,13 +2,13 @@ package de.lukasbreuer.bot.chunk;
 
 import de.lukasbreuer.bot.block.Block;
 import de.lukasbreuer.bot.block.BlockPosition;
+import de.lukasbreuer.bot.block.BlockType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Accessors(fluent = true)
@@ -29,9 +29,10 @@ public final class Chunk {
     blocks.add(block);
   }
 
-  public Optional<Block> findBlockByPosition(BlockPosition position) {
-    return blocks.stream()
+  public Block findBlockByPosition(BlockPosition position) {
+    var block = blocks.stream()
       .filter(chunkBlock -> chunkBlock.blockPosition().equals(position))
       .findFirst();
+    return block.orElseGet(() -> Block.create(position, BlockType.AIR));
   }
 }

@@ -1,6 +1,8 @@
 package de.lukasbreuer.bot.world;
 
 import de.lukasbreuer.bot.block.Block;
+import de.lukasbreuer.bot.block.BlockPosition;
+import de.lukasbreuer.bot.block.BlockType;
 import de.lukasbreuer.bot.chunk.Chunk;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.Lists;
@@ -27,6 +29,8 @@ public class World {
     var chunk = findChunkByCoordinates(chunkX, chunkZ);
     if (chunk.isEmpty()) {
       addChunk(Chunk.empty(chunkX, chunkZ));
+      updateBlock(block);
+      return;
     }
     chunk.get().updateBlock(block);
   }
@@ -39,6 +43,16 @@ public class World {
     return chunks.stream()
       .filter(chunk -> chunk.x() == x && chunk.z() == z)
       .findFirst();
+  }
+
+  public Block findBlockByPosition(BlockPosition position) {
+    var chunkX = (int) Math.floor(position.x() / 16D);
+    var chunkZ = (int) Math.floor(position.z() / 16D);
+    var chunk = findChunkByCoordinates(chunkX, chunkZ);
+    if (chunk.isEmpty()) {
+      return Block.create(position, BlockType.AIR);
+    }
+    return chunk.get().findBlockByPosition(position);
   }
 
   public List<Chunk> findAll() {
