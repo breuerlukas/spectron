@@ -17,9 +17,17 @@ public final class PlayerLocation {
   private float pitch;
 
   public void update(double x, double y, double z, float yaw, float pitch) {
+    updatePosition(x, y, z);
+    updateRotation(yaw, pitch);
+  }
+
+  public void updatePosition(double x, double y, double z) {
     x(x);
     y(y);
     z(z);
+  }
+
+  public void updateRotation(float yaw, float pitch) {
     yaw(yaw);
     pitch(pitch);
   }
