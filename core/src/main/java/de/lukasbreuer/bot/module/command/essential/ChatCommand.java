@@ -6,7 +6,6 @@ import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.log.Log;
 import de.lukasbreuer.bot.module.command.Command;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 public final class ChatCommand extends Command {
@@ -37,15 +36,14 @@ public final class ChatCommand extends Command {
       return false;
     }
     if (arguments[0].startsWith("/")) {
-      return sendChatCommand(String.join(" ", arguments).replace("/", ""),
-        Arrays.copyOfRange(arguments, 1, arguments.length));
+      return sendChatCommand(String.join(" ", arguments).replace("/", ""));
     }
     return sendChatMessage(String.join(" ", arguments));
   }
 
-  private boolean sendChatCommand(String command, String[] arguments) throws Exception {
+  private boolean sendChatCommand(String command) throws Exception {
     var chatCommand = de.lukasbreuer.bot.chat.ChatCommand.create(client,
-      authentication, playerUuid, command, arguments);
+      authentication, playerUuid, command);
     chatCommand.send();
     log().info("You have successfully sent the message \"/" + command + "\"");
     return true;

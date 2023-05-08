@@ -5,6 +5,7 @@ import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.connection.packet.outbound.play.PacketChatCommand;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.UUID;
 
@@ -14,11 +15,12 @@ public final class ChatCommand {
   private final Authentication authentication;
   private final UUID playerUuid;
   private final String command;
-  private final String[] arguments;
 
   public void send() throws Exception {
     var salt = new Random().nextLong();
     var timestamp = System.currentTimeMillis();
+    var arguments = command.split(" ");
+    arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
     var commandArguments = new PacketChatCommand.Argument[arguments.length];
     for (var i = 0; i < arguments.length; i++) {
       commandArguments[i] = createCommandArgument(salt, timestamp, arguments[i]);
