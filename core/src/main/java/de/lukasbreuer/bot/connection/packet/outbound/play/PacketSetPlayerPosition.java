@@ -13,13 +13,13 @@ public final class PacketSetPlayerPosition extends PacketOutgoing {
   public PacketSetPlayerPosition(
     PlayerLocation location, PlayerStatus status
   ) {
-    super(0x14, ProtocolState.PLAY);
+    super(0x15, ProtocolState.PLAY);
     this.location = location;
     this.status = status;
   }
 
   public PacketSetPlayerPosition() {
-    super(0x14, ProtocolState.PLAY);
+    super(0x15, ProtocolState.PLAY);
     this.location = null;
     this.status = null;
   }
@@ -29,6 +29,8 @@ public final class PacketSetPlayerPosition extends PacketOutgoing {
     buffer.raw().writeDouble(location.x());
     buffer.raw().writeDouble(location.y());
     buffer.raw().writeDouble(location.z());
+    buffer.raw().writeFloat(location.yaw());
+    buffer.raw().writeFloat(location.pitch());
     buffer.raw().writeBoolean(status.isOnGround());
   }
 }
