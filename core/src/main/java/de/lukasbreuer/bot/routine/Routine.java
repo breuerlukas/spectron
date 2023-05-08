@@ -12,7 +12,7 @@ public class Routine {
 
   public CompletableFuture<Void> execute() {
     var future = new CompletableFuture<Void>();
-    new Thread(() -> callAssignments(future));
+    new Thread(() -> callAssignments(future)).start();
     return future;
   }
 
