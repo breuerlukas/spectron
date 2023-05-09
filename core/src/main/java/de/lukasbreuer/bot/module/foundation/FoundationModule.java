@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.event.HookRegistry;
+import de.lukasbreuer.bot.log.Log;
 import de.lukasbreuer.bot.module.Module;
 import de.lukasbreuer.bot.player.PlayerLocation;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ public final class FoundationModule extends Module {
   private final Injector injector;
   private final ConnectionClient client;
   private final PlayerLocation playerLocation;
+  @Inject
+  private Log log;
   @Inject
   private HookRegistry hookRegistry;
 
@@ -28,7 +31,7 @@ public final class FoundationModule extends Module {
 
   private void registerHooks() {
     hookRegistry.register(KeepAlive.create(client));
-    hookRegistry.register(PlayerDisconnect.create());
+    hookRegistry.register(PlayerDisconnect.create(log));
     hookRegistry.register(SynchronizePlayerPosition.create(client, playerLocation));
   }
 

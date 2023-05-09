@@ -9,6 +9,7 @@ import de.lukasbreuer.bot.connection.ProtocolState;
 import de.lukasbreuer.bot.connection.packet.outbound.handshake.PacketHandshake;
 import de.lukasbreuer.bot.connection.packet.outbound.login.PacketLoginStart;
 import de.lukasbreuer.bot.event.HookRegistry;
+import de.lukasbreuer.bot.log.Log;
 import de.lukasbreuer.bot.module.Module;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,8 @@ public final class LoginModule extends Module {
   private final Injector injector;
   private final ConnectionClient client;
   private final Authentication authentication;
+  @Inject
+  private Log log;
   @Inject
   private HookRegistry hookRegistry;
   @Inject
@@ -49,7 +52,7 @@ public final class LoginModule extends Module {
   }
 
   private void registerHooks() {
-    hookRegistry.register(LoginFailure.create());
+    hookRegistry.register(LoginFailure.create(log));
     hookRegistry.register(LoginEncryptionRequest.create(client, authentication));
     hookRegistry.register(LoginCompressionRequest.create(client));
     hookRegistry.register(LoginSuccess.create(client, authentication));
