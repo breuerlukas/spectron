@@ -98,6 +98,8 @@ public final class Bot {
     registry.registerIncomingPacket(PacketSystemChatMessage.class);
     registry.registerIncomingPacket(PacketSynchronizePlayerPosition.class);
     registry.registerIncomingPacket(PacketSpawnPlayer.class);
+    registry.registerIncomingPacket(PacketSetContainerContent.class);
+    registry.registerIncomingPacket(PacketSetContainerSlot.class);
   }
 
   private <T> T findNamedInstance(Class<? extends T> type, String name) {

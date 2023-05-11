@@ -61,6 +61,12 @@ public final class ChannelPacketInbox extends SimpleChannelInboundHandler<Packet
         packet.teleportId()));
     } else if (incomingPacket instanceof PacketSpawnPlayer packet) {
       eventExecutor.execute(SpawnPlayerEvent.create(packet.playerUuid()));
+    } else if (incomingPacket instanceof PacketSetContainerContent packet) {
+      eventExecutor.execute(SetContainerContentEvent.create(packet.windowId(),
+        packet.lastStateId(), packet.content()));
+    } else if (incomingPacket instanceof PacketSetContainerSlot packet) {
+      eventExecutor.execute(SetContainerSlotEvent.create(packet.windowId(),
+        packet.lastStateId(), packet.slot(), packet.item()));
     }
   }
 }
