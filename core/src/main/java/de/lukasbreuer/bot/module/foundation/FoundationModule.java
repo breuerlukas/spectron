@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import de.lukasbreuer.bot.connection.ConnectionClient;
 import de.lukasbreuer.bot.event.HookRegistry;
+import de.lukasbreuer.bot.inventory.InventoryRegistry;
 import de.lukasbreuer.bot.log.Log;
 import de.lukasbreuer.bot.module.Module;
 import de.lukasbreuer.bot.player.PlayerLocation;
@@ -18,6 +19,8 @@ public final class FoundationModule extends Module {
   private Log log;
   @Inject
   private HookRegistry hookRegistry;
+  @Inject
+  private InventoryRegistry inventoryRegistry;
 
   @Override
   public void onLoad() {
@@ -33,6 +36,7 @@ public final class FoundationModule extends Module {
     hookRegistry.register(KeepAlive.create(client));
     hookRegistry.register(PlayerDisconnect.create(log));
     hookRegistry.register(SynchronizePlayerPosition.create(client, playerLocation));
+    hookRegistry.register(PlayerInventoryTrigger.create(inventoryRegistry));
   }
 
   @Override
@@ -40,5 +44,6 @@ public final class FoundationModule extends Module {
     hookRegistry.unregister(KeepAlive.class);
     hookRegistry.unregister(PlayerDisconnect.class);
     hookRegistry.unregister(SynchronizePlayerPosition.class);
+    hookRegistry.unregister(PlayerInventoryTrigger.class);
   }
 }
