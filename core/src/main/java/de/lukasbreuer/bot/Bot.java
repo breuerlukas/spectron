@@ -83,6 +83,7 @@ public final class Bot {
     registry.registerOutgoingPacket(PacketConfirmTeleportation.class);
     registry.registerOutgoingPacket(PacketSetPlayerPosition.class);
     registry.registerOutgoingPacket(PacketPlayerAction.class);
+    registry.registerOutgoingPacket(PacketSwingArm.class);
   }
 
   private void registerIncomingPackets(PacketRegistry registry) throws Exception {
@@ -96,6 +97,7 @@ public final class Bot {
     registry.registerIncomingPacket(PacketPlayerChatMessage.class);
     registry.registerIncomingPacket(PacketSystemChatMessage.class);
     registry.registerIncomingPacket(PacketSynchronizePlayerPosition.class);
+    registry.registerIncomingPacket(PacketSpawnPlayer.class);
   }
 
   private <T> T findNamedInstance(Class<? extends T> type, String name) {
