@@ -59,6 +59,8 @@ public final class ChannelPacketInbox extends SimpleChannelInboundHandler<Packet
       eventExecutor.execute(SynchronizePlayerPositionEvent.create(packet.x(),
         packet.y(), packet.z(), packet.yaw(), packet.pitch(), packet.flags(),
         packet.teleportId()));
+    } else if (incomingPacket instanceof PacketSpawnPlayer packet) {
+      eventExecutor.execute(SpawnPlayerEvent.create(packet.playerUuid()));
     }
   }
 }
