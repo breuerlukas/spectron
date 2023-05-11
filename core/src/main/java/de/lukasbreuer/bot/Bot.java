@@ -84,6 +84,7 @@ public final class Bot {
     registry.registerOutgoingPacket(PacketSetPlayerPosition.class);
     registry.registerOutgoingPacket(PacketPlayerAction.class);
     registry.registerOutgoingPacket(PacketSwingArm.class);
+    registry.registerOutgoingPacket(PacketClickContainer.class);
   }
 
   private void registerIncomingPackets(PacketRegistry registry) throws Exception {
