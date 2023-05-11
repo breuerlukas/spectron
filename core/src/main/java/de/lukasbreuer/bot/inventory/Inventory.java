@@ -26,14 +26,14 @@ public final class Inventory {
   }
 
   public void updateAll(Map<Integer, Item> content) {
-    content = Maps.newHashMap(content);
+    this.content = Maps.newHashMap(content);
   }
 
   public Optional<Item> findItemBySlot(int slot) {
     return Optional.ofNullable(content.get(slot));
   }
 
-  public Map<Integer, Item> findItemsByType(ItemType type) {
+  public Map<Integer, Item> findItemsOfType(ItemType type) {
     var result = Maps.<Integer, Item>newHashMap();
     content.entrySet().stream()
       .filter(entry -> entry.getValue().type() == type)
