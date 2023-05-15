@@ -31,8 +31,7 @@ public final class LoginSuccess implements Hook {
     client.sessionId(sessionId);
     sendClientInformationPacket();
     authentication.certificatePlayer().thenAccept(certificate ->
-      sendPlayerSessionPacket(sessionId, certificate)).thenAccept(value ->
-      sendClientInformationPacket());
+      sendPlayerSessionPacket(sessionId, certificate));
   }
 
   private void sendClientInformationPacket() {

@@ -30,6 +30,7 @@ public final class MinecraftCertificateRequest implements AuthenticationRequest<
     var request = HttpRequest.newBuilder()
       .uri(URI.create(MINECRAFT_CERTIFICATE_URL))
       .header("Authorization", "Bearer " + accessToken)
+      .header("Content-Length", "0")
       .POST(HttpRequest.BodyPublishers.ofString("")).build();
     return HttpClient.newHttpClient()
       .sendAsync(request, HttpResponse.BodyHandlers.ofString())
