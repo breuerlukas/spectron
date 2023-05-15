@@ -29,9 +29,9 @@ public final class LoginSuccess implements Hook {
     System.out.println("UUID: " + event.uuid());
     var sessionId = UUID.randomUUID();
     client.sessionId(sessionId);
-    sendClientInformationPacket();
     authentication.certificatePlayer().thenAccept(certificate ->
-      sendPlayerSessionPacket(sessionId, certificate));
+      sendPlayerSessionPacket(sessionId, certificate)).thenAccept(value ->
+      sendClientInformationPacket());
   }
 
   private void sendClientInformationPacket() {
