@@ -5,8 +5,8 @@ plugins {
 group "de.lukasbreuer.minecraftbot"
 version "1.0.0-SNAPSHOT"
 
-sourceCompatibility = 20
-targetCompatibility = 20
+sourceCompatibility = 19
+targetCompatibility = 19
 
 repositories {
   mavenCentral()
@@ -40,4 +40,22 @@ dependencies {
 
 test {
   useJUnitPlatform()
+}
+
+jar {
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+  manifest {
+    attributes(
+      "Main-Class": "de.lukasbreuer.bot.BotApplication",
+    )
+  }
+
+  from {
+    (configurations.runtimeClasspath).collect {
+      it.isDirectory() ? it : zipTree(it)
+    }
+  }
+
+  exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
