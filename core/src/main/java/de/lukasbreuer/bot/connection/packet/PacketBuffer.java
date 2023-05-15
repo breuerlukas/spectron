@@ -80,6 +80,19 @@ public final class PacketBuffer {
     return new String(bytes);
   }
 
+  public long readVarLong() {
+    long value = 0;
+    int position = 0;
+    byte currentByte;
+    while (true) {
+      currentByte = buffer.readByte();
+      value |= (long) (currentByte & 0x7F) << position;
+      if ((currentByte & 0x80) == 0) break;
+      position += 7;
+    }
+    return value;
+  }
+
   public UUID readUUID() {
     var mostSignificantBits = buffer.readLong();
     var leastSignificantBits = buffer.readLong();
