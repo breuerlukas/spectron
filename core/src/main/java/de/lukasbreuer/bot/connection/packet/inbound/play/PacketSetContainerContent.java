@@ -41,7 +41,7 @@ public final class PacketSetContainerContent extends PacketIncoming {
       }
       var itemId = buffer.readVarInt();
       var itemType = Arrays.stream(ItemType.values())
-        .filter(type -> type.id() == itemId).findFirst().orElse(ItemType.EMPTY);
+        .filter(type -> type.id() == itemId).findFirst().orElse(ItemType.UNKNOWN);
       var itemCount = buffer.raw().readByte();
       readItemNbtTag(buffer);
       content.put(i, Item.create(itemType, itemCount));

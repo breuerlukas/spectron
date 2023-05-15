@@ -49,7 +49,9 @@ public final class PacketClickContainer extends PacketOutgoing {
     buffer.writeVarInt(content.size());
     for (var entry : content.entrySet()) {
       buffer.raw().writeShort(entry.getKey());
-      if (entry.getValue().type() == ItemType.EMPTY) {
+      if (entry.getValue().type() == ItemType.EMPTY ||
+        entry.getValue().type() == ItemType.UNKNOWN
+      ) {
         buffer.raw().writeBoolean(false);
         continue;
       }
@@ -58,6 +60,6 @@ public final class PacketClickContainer extends PacketOutgoing {
       buffer.raw().writeByte(entry.getValue().amount());
       buffer.raw().writeByte(0);
     }
-    buffer.raw().writeByte(0);
+    buffer.raw().writeBoolean(false);
   }
 }

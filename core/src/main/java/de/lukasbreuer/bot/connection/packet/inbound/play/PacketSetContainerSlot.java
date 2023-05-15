@@ -34,7 +34,7 @@ public final class PacketSetContainerSlot extends PacketIncoming {
     }
     var itemId = buffer.readVarInt();
     var itemType = Arrays.stream(ItemType.values())
-      .filter(type -> type.id() == itemId).findFirst().orElse(ItemType.EMPTY);
+      .filter(type -> type.id() == itemId).findFirst().orElse(ItemType.UNKNOWN);
     var itemCount = buffer.raw().readByte();
     item = Item.create(itemType, itemCount);
   }
