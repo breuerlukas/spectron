@@ -10,6 +10,7 @@ import de.lukasbreuer.bot.event.EventHook;
 import de.lukasbreuer.bot.event.Hook;
 import de.lukasbreuer.bot.event.HookPriority;
 import de.lukasbreuer.bot.event.login.LoginSuccessEvent;
+import de.lukasbreuer.bot.log.Log;
 import lombok.RequiredArgsConstructor;
 
 import java.nio.ByteBuffer;
@@ -19,14 +20,17 @@ import java.util.UUID;
 @RequiredArgsConstructor(staticName = "create")
 public final class LoginSuccess implements Hook {
   private final ConnectionClient client;
+  private final Log log;
   private final Authentication authentication;
 
   @EventHook(priority = HookPriority.FIRST)
   private void loginSuccess(LoginSuccessEvent event) {
     client.protocolState(ProtocolState.PLAY);
-    System.out.println("Login success");
-    System.out.println("Username: " + event.username());
-    System.out.println("UUID: " + event.uuid());
+    log.info("");
+    log.info("The login was successful");
+    log.info("Username: " + event.username());
+    log.info("UUID: " + event.uuid());
+    log.info("");
     var sessionId = UUID.randomUUID();
     client.sessionId(sessionId);
     authentication.certificatePlayer().thenAccept(certificate ->
