@@ -101,6 +101,7 @@ public final class Bot {
     registry.registerIncomingPacket(PacketSpawnPlayer.class);
     registry.registerIncomingPacket(PacketSetContainerContent.class);
     registry.registerIncomingPacket(PacketSetContainerSlot.class);
+    registry.registerIncomingPacket(PacketBlockUpdate.class);
   }
 
   private <T> T findNamedInstance(Class<? extends T> type, String name) {

@@ -67,6 +67,10 @@ public final class ChannelPacketInbox extends SimpleChannelInboundHandler<Packet
     } else if (incomingPacket instanceof PacketSetContainerSlot packet) {
       eventExecutor.execute(SetContainerSlotEvent.create(packet.windowId(),
         packet.lastStateId(), packet.slot(), packet.item()));
+    } else if (incomingPacket instanceof PacketBlockUpdate packet) {
+      for (var block : packet.blocks()) {
+        eventExecutor.execute(BlockUpdateEvent.create(block));
+      }
     }
   }
 }
