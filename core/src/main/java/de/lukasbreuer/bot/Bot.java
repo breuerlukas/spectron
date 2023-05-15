@@ -85,6 +85,7 @@ public final class Bot {
     registry.registerOutgoingPacket(PacketPlayerAction.class);
     registry.registerOutgoingPacket(PacketSwingArm.class);
     registry.registerOutgoingPacket(PacketClickContainer.class);
+    registry.registerOutgoingPacket(PacketUseItem.class);
   }
 
   private void registerIncomingPackets(PacketRegistry registry) throws Exception {
@@ -99,6 +100,7 @@ public final class Bot {
     registry.registerIncomingPacket(PacketSystemChatMessage.class);
     registry.registerIncomingPacket(PacketSynchronizePlayerPosition.class);
     registry.registerIncomingPacket(PacketSpawnPlayer.class);
+    registry.registerIncomingPacket(PacketRemoveEntities.class);
     registry.registerIncomingPacket(PacketSetContainerContent.class);
     registry.registerIncomingPacket(PacketSetContainerSlot.class);
     registry.registerIncomingPacket(PacketBlockUpdate.class);

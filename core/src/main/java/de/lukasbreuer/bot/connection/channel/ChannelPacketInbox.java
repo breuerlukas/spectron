@@ -60,7 +60,12 @@ public final class ChannelPacketInbox extends SimpleChannelInboundHandler<Packet
         packet.y(), packet.z(), packet.yaw(), packet.pitch(), packet.flags(),
         packet.teleportId()));
     } else if (incomingPacket instanceof PacketSpawnPlayer packet) {
-      eventExecutor.execute(SpawnPlayerEvent.create(packet.playerUuid()));
+      eventExecutor.execute(SpawnPlayerEvent.create(packet.playerUuid(),
+        packet.entityId()));
+    } else if (incomingPacket instanceof PacketRemoveEntities packet) {
+      for (var entityId : packet.entityIds()) {
+        eventExecutor.execute(RemoveEntityEvent.create(entityId));
+      }
     } else if (incomingPacket instanceof PacketSetContainerContent packet) {
       eventExecutor.execute(SetContainerContentEvent.create(packet.windowId(),
         packet.lastStateId(), packet.content()));

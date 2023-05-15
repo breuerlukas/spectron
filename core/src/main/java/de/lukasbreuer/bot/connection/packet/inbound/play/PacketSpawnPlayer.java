@@ -12,6 +12,7 @@ import java.util.UUID;
 @Accessors(fluent = true)
 public final class PacketSpawnPlayer extends PacketIncoming {
   private UUID playerUuid;
+  private int entityId;
 
   public PacketSpawnPlayer() {
     super(0x03, ProtocolState.PLAY);
@@ -19,7 +20,7 @@ public final class PacketSpawnPlayer extends PacketIncoming {
 
   @Override
   public void read(PacketBuffer buffer) {
-    buffer.readVarInt();
+    entityId = buffer.readVarInt();
     playerUuid = buffer.readUUID();
   }
 }
