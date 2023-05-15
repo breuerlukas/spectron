@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ItemType {
+  UNKNOWN(-1),
   EMPTY(0),
   IRON_PICKAXE(790);
 
