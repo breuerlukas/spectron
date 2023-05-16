@@ -24,6 +24,7 @@ public final class InventoryRegistry {
 
   public Optional<Inventory> findInventoryByWindowId(byte windowId) {
     return inventories.stream()
+      .filter(inventory -> inventory.windowId() == windowId)
       .findFirst();
   }
 
