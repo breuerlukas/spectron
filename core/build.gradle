@@ -5,9 +5,6 @@ plugins {
 group "de.lukasbreuer.spectron"
 version "1.0.0-SNAPSHOT"
 
-sourceCompatibility = 19
-targetCompatibility = 19
-
 repositories {
   mavenCentral()
   maven {
