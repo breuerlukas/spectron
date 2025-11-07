@@ -2,7 +2,7 @@ plugins {
   id "java"
 }
 
-group "de.lukasbreuer.minecraftbot"
+group "de.lukasbreuer.spectron"
 version "1.0.0-SNAPSHOT"
 
 sourceCompatibility = 19

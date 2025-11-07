@@ -1,4 +1,4 @@
-group 'de.lukasbreuer.minecraftbot'
+group 'de.lukasbreuer.spectron'
 version '1.0.0-SNAPSHOT'
 
 task build {
