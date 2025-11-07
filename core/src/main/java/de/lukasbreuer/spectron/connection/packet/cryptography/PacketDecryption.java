@@ -1,0 +1,31 @@
+package de.lukasbreuer.spectron.connection.packet.cryptography;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import lombok.RequiredArgsConstructor;
+
+import javax.crypto.SecretKey;
+import java.util.List;
+
+@RequiredArgsConstructor(staticName = "create")
+public final class PacketDecryption extends ByteToMessageDecoder {
+  public static PacketDecryption create(SecretKey key) {
+    var cipher = Cipher.create(key, CipherMode.DECRYPTION);
+    cipher.initialize();
+    return create(cipher);
+  }
+
+  private final Cipher cipher;
+
+  @Override
+  protected void decode(
+    ChannelHandlerContext context, ByteBuf buffer, List<Object> list
+  ) {
+    try {
+      list.add(cipher.decrypt(context, buffer));
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+  }
+}
