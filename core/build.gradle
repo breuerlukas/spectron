@@ -25,7 +25,7 @@ dependencies {
   testImplementation "org.projectlombok:lombok:1.18.26"
   testAnnotationProcessor "org.projectlombok:lombok:1.18.26"
 
-  implementation "org.json:json:20230227"
+  implementation "org.json:json:20250517"
 
   implementation "io.netty:netty-all:4.1.91.Final"
 
