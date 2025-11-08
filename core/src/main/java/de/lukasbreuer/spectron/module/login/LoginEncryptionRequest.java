@@ -71,7 +71,7 @@ public final class LoginEncryptionRequest implements Hook {
   }
 
   private byte[] encrypt(byte[] data, PublicKey publicKey) throws Exception {
-    var cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+    var cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
     cipher.init(Cipher.ENCRYPT_MODE, publicKey);
     return cipher.doFinal(data);
   }
