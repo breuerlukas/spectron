@@ -27,7 +27,7 @@ dependencies {
 
   implementation "org.json:json:20250517"
 
-  implementation "io.netty:netty-all:4.2.7.Final"
+  implementation "io.netty:netty-all:4.2.9.Final"
 
   implementation "org.seleniumhq.selenium:selenium-java:4.39.0"
   implementation "io.github.bonigarcia:webdrivermanager:6.3.3"
